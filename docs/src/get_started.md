@@ -18,17 +18,7 @@ druid = "0.7.0"
 
 To show a minimal window with a label replace `main.rs` with this;
 ```rust, noplaypen
-use druid::{AppLauncher, WindowDesc, Widget, PlatformError};
-use druid::widget::Label;
-
-fn build_ui() -> impl Widget<()> {
-    Label::new("Hello world")
-}
-
-fn main() -> Result<(), PlatformError> {
-    AppLauncher::with_window(WindowDesc::new(build_ui())).launch(())?;
-    Ok(())
-}
+{{#include ../book_examples/src/get_started/hello.rs:hello}}
 ```
 In our main function we create an `AppLauncher`, pass it a `WindowDesc` that wraps build_ui function and launch it. Druid will use our `build_ui` function to build and rebuild our main window every time it needs to refresh. `build_ui` returns a tree of widgets. For now this tree consists of one simple label widget.
 
@@ -41,19 +31,7 @@ We solve both these problems by passing in a widget-tree with one single widget 
 To see how this works we will divide our window in four. We'll have two rows and two columns with a single label in each of the quadrants. We can lay-out our labels using the `Flex` widget.
 
 ```rust, noplaypen
-fn build_ui() -> impl Widget<()> {
-    Flex::row()
-        .with_flex_child(
-            Flex::column()
-                .with_flex_child(Label::new("top left"), 1.0)
-                .with_flex_child(Label::new("bottom left"), 1.0),
-            1.0)
-        .with_flex_child(
-            Flex::column()
-                .with_flex_child(Label::new("top right"), 1.0)
-                .with_flex_child(Label::new("bottom right"), 1.0),
-            1.0)
-}
+{{#include ../book_examples/src/get_started/flex.rs:flex}}
 ```
 
 This looks nice but the labels on the left are drawn right against the window edge, so we needs some padding. Lets say we also want to center the two bottom labels. Unlike many other UI frameworks, widgets in Druid don't have padding or alignment properties themselves. Widgets are kept as simple as possible.
@@ -61,26 +39,12 @@ This looks nice but the labels on the left are drawn right against the window ed
 Features like padding or alignment are implemented in separate widgets. To add padding you simply wrap the labels in a `Padding` widget. Centering widgets is done using the `Align` widget set to `centered`.
 
 ```rust, noplaypen
-fn build_ui() -> impl Widget<()> {
-    Padding::new(
-        10.0,
-        Flex::row()
-            .with_flex_child(
-                Flex::column()
-                    .with_flex_child(Label::new("top left"), 1.0)
-                    .with_flex_child(Align::centered(Label::new("bottom left")), 1.0),
-                1.0)
-            .with_flex_child(
-                Flex::column()
-                    .with_flex_child(Label::new("top right"), 1.0)
-                    .with_flex_child(Align::centered(Label::new("bottom right")), 1.0),
-                1.0))
-}
+{{#include ../book_examples/src/get_started/padding.rs:padding}}
 ```
 
 Do not forget to import the new widgets;
 ```rust, noplaypen
-use druid::widget::{Label, Flex, Padding, Align};
+{{#include ../book_examples/src/get_started/padding.rs:padding_imports}}
 ```
 
 ## Application state

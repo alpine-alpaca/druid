@@ -5,5 +5,6 @@
 mod custom_widgets_md;
 mod data_md;
 mod env_md;
+mod get_started;
 mod lens_md;
 mod widget_md;
